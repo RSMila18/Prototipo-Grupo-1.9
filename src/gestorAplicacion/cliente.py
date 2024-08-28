@@ -1,7 +1,10 @@
 class Cliente:
-    def __init__(self, nombre, nit, representante_legal, correo, telefono, usuario, contrasena):
+    usuarios_registrados = set()  # Conjunto para almacenar nombres de usuario únicos
+
+    def __init__(self, nombre, tipo_documento, documento, representante_legal, correo, telefono, usuario, contrasena):
         self.nombre = nombre
-        self.nit = nit
+        self.tipo_documento = tipo_documento
+        self.documento = documento
         self.representante_legal = representante_legal
         self.correo = correo
         self.telefono = telefono
@@ -9,14 +12,21 @@ class Cliente:
         self.contrasena = contrasena
         self.verificado = False
 
+    @classmethod
+    def es_usuario_unico(cls, usuario):
+        return usuario not in cls.usuarios_registrados
+
     def registrar(self):
-        print(f"Registrando cliente: {self.nombre}")
-        # Aquí podrías agregar más lógica para almacenar o procesar los datos del cliente
-        self.enviar_verificacion()
+        if Cliente.es_usuario_unico(self.usuario):
+            Cliente.usuarios_registrados.add(self.usuario)
+            print(f"Registrando cliente: {self.nombre}")
+            self.enviar_verificacion()
+        else:
+            print(f"Error: El nombre de usuario '{self.usuario}' ya está en uso. Por favor, elija otro.")
 
     def enviar_verificacion(self):
         # Simulación de envío de verificación
-        print(f"Enviando verificación al correo: {self.correo}")
+        print(f"Su usuario fue registrado correctamente.")
         self.verificar()
 
     def verificar(self):
