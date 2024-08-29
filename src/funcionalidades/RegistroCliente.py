@@ -1,11 +1,11 @@
 from gestorAplicacion.cliente import Cliente
 
 def main():
-    print("Bienvenido!\nPor favor inicie sesión o cree un nuevo usuario.\n1. Iniciar Sesión.\n2. Crear un nuevo usuario.")
-    inicio = int(input("Elija una opción (1/2): "))
+    print("---------------Bienvenido!---------------\nPor favor inicie sesión o cree un nuevo usuario.\n1. Iniciar Sesión.\n2. Crear un nuevo usuario.")
+    inicio = int(input("\nElija una opción (1/2): "))
 
     if inicio == 1:
-        print("Usted seleccionó ** Iniciar Sesión **\nPor favor ingrese su nombre de usuario y contraseña")
+        print("------------** Iniciar Sesión **------------\nPor favor ingrese su nombre de usuario y contraseña\n")
         usuario_input = input("Nombre de usuario: ")
         contrasena_input = input("Contraseña: ")
 
@@ -13,18 +13,18 @@ def main():
         for user in Cliente.usuarios_registrados:
             if user.usuario == usuario_input:
                 if user.iniciar_sesion(usuario_input, contrasena_input):
-                    print("Inicio de sesión exitoso.")
+                    print("\nInicio de sesión exitoso.")
                     usuario_encontrado = True
                 else:
-                    print("Contraseña incorrecta.")
+                    print("\nContraseña incorrecta.")
                 break
 
         if not usuario_encontrado:
-            print("Usuario no encontrado.")
+            print("\nUsuario no encontrado.")
 
     elif inicio == 2:
         while True:
-            print("Usted seleccionó ** Crear un nuevo usuario **\nPor favor diligencie sus datos")
+            print("---------** Crear un nuevo usuario **---------\nPor favor diligencie sus datos\n")
 
             nombre = ""
             documento = ""
@@ -47,7 +47,7 @@ def main():
                 nombre = input("Nombre: ")
                 representante_legal = "N/A"
             else:
-                print("Opción no válida. Se asignará 'NIT' por defecto.")
+                print("\nOpción no válida. Se asignará 'NIT' por defecto.")
                 tipo_documento = "NIT"
                 documento = input(f"Ingrese el número del NIT: ")
                 nombre = input("Nombre de la entidad: ")
@@ -63,12 +63,12 @@ def main():
             cliente.registrar()
 
             # Proceso de inicio de sesión
-            print("\n** Inicio de Sesión **")
+            print("\n------------** Iniciar Sesión **------------")
             usuario_input = input("Nombre de usuario: ")
             contrasena_input = input("Contraseña: ")
 
             if cliente.iniciar_sesion(usuario_input, contrasena_input):
-                print("Inicio de sesión exitoso.")
+                print("\nInicio de sesión exitoso.")
                 break  # Sale del bucle si el registro e inicio de sesión fueron exitosos
 
     else:
