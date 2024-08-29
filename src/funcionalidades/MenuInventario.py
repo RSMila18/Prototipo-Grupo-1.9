@@ -1,6 +1,8 @@
+import ManejoInventario
+
 class MenuInventario:
     def __init__(self):
-        self.inventario = Inventario()
+        self.inventario = ManejoInventario.Inventario()
 
     def mostrar_menu(self):
         while True:
