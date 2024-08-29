@@ -1,0 +1,25 @@
+Bolsas de Basura|80|2024-08-28
+Guantes|40|2024-08-28
+Pala|8|2024-08-28
+Mascarillas|150|2024-09-01
+Guantes|80|2024-09-01
+Termómetros|15|2024-09-01
+Papel|80|2024-09-10
+Tijeras|40|2024-09-10
+Pegamento|25|2024-09-10
+Sillas|180|2024-09-15
+Mesas|18|2024-09-15
+Proyector|2|2024-09-15
+Micrófono|4|2024-09-15
+Stands|90|2024-09-20
+Sillas|180|2024-09-20
+Mesas|45|2024-09-20
+Escenario|1|2024-10-05
+Sillas|250|2024-10-05
+Micrófono|8|2024-10-05
+Proyector|4|2024-10-15
+Sillas|450|2024-10-15
+Mesas|45|2024-10-15
+Mesas|18|2024-10-25
+Sillas|90|2024-10-25
+Carpas|4|2024-10-25
