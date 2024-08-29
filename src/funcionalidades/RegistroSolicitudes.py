@@ -1,5 +1,5 @@
 from gestorAplicacion.cliente import Cliente
-
+from gestorAplicacion.solicitud import Solicitud
 
 
 def mostrar_menu():
