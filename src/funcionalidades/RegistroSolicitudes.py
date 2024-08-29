@@ -25,7 +25,7 @@ def enviar_solicitud():
 
 
 
-def main():
+def registro_solicitudes_main():
     while True:
         opcion = mostrar_menu()
         if opcion == '1':
@@ -38,4 +38,4 @@ def main():
             print("Opción no válida, por favor intente de nuevo.")
 
 if __name__ == '__main__':
-    main()
+    registro_solicitudes_main()

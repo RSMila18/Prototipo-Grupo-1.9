@@ -1,6 +1,6 @@
 from gestorAplicacion.cliente import Cliente
 
-def main():
+def registro_cliente_main():
     print("---------------Bienvenido!---------------\nPor favor inicie sesión o cree un nuevo usuario.\n1. Iniciar Sesión.\n2. Crear un nuevo usuario.")
     inicio = int(input("\nElija una opción (1/2): "))
 
@@ -9,18 +9,17 @@ def main():
         usuario_input = input("Nombre de usuario: ")
         contrasena_input = input("Contraseña: ")
 
-        usuario_encontrado = False
         for user in Cliente.usuarios_registrados:
             if user.usuario == usuario_input:
                 if user.iniciar_sesion(usuario_input, contrasena_input):
                     print("\nInicio de sesión exitoso.")
-                    usuario_encontrado = True
+                    return user.usuario  # Retorna el nombre de usuario autenticado
                 else:
                     print("\nContraseña incorrecta.")
                 break
-
-        if not usuario_encontrado:
+        else:
             print("\nUsuario no encontrado.")
+            return None
 
     elif inicio == 2:
         while True:
@@ -62,18 +61,20 @@ def main():
             cliente = Cliente(nombre, tipo_documento, documento, representante_legal, correo, telefono, usuario, contrasena)
             cliente.registrar()
 
-            # Proceso de inicio de sesión
+            # Proceso de inicio de sesión después del registro
             print("\n------------** Iniciar Sesión **------------")
             usuario_input = input("Nombre de usuario: ")
             contrasena_input = input("Contraseña: ")
 
             if cliente.iniciar_sesion(usuario_input, contrasena_input):
                 print("\nInicio de sesión exitoso.")
-                break  # Sale del bucle si el registro e inicio de sesión fueron exitosos
+                return cliente.usuario  # Retorna el nombre de usuario autenticado después del registro
 
     else:
         print("Opción inválida")
+        return None
 
 if __name__ == "__main__":
-    main()
+    registro_cliente_main()
+
 
