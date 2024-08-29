@@ -1,5 +1,6 @@
 from funcionalidades.RegistroCliente import registro_cliente_main
 from funcionalidades.RegistroSolicitudes import registro_solicitudes_main
+from funcionalidades.Calendario import calendariomain
 
 def opciones_admin():
     print("\nBienvenido, ADMIN.")
@@ -22,7 +23,8 @@ if __name__ == "__main__":
             print("\nGestion inventario") #Aqui enlaza tus funcionalidad JUAN MANUEL
 
         if admin_input == 2:
-            print("\nCalendario de Eventos") #Aqui enlaza tus funcionalidad JHONY
+            print("\nCalendario de Eventos")
+            calendariomain()
     else:
         opciones_usuario_normal()
         usuario_normal_input= int(input("Por favor, ingrese una opción (1/2): "))
