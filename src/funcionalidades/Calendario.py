@@ -191,5 +191,6 @@ def main():
             print("Acción no válida. Intente de nuevo.")
 
 
-# Ejecutar la función principal
-main()
+def calendariomain():
+    # Ejecutar la función principal
+    main()
