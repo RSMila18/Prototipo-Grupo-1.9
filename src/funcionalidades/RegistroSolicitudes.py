@@ -1,3 +1,7 @@
+from gestorAplicacion.cliente import Cliente
+
+
+
 def mostrar_menu():
     print("--------------- Bienvenido a la solicitud de eventos ---------------")
     print("1. Enviar una nueva solicitud")
@@ -7,17 +11,17 @@ def mostrar_menu():
     
 
 def enviar_solicitud():
-    nombre = input("Ingrese su nombre: ")
-    apellido = input("Ingrese su apellido: ")
-    carnet = input("Ingrese su numero de identificación: ")
+   
     nombre_evento = input("Ingrese el nombre del evento: ")
     fecha_evento = input("Ingrese la fecha del evento (DD/MM/AAAA): ")
     descripcion_evento = input("Ingrese una breve descripción del evento: ")
 
-    # Aquí podrías agregar lógica para almacenar la información en una base de datos o archivo
-    print("\nSolicitud enviada con éxito.")
-    print(f"Detalles de la solicitud:\n- Responsable: {nombre, apellido}\n- Numero de documento: {carnet}\n- Nombre del evento: {nombre_evento}\n- Fechad de realización: {fecha_evento}\n- Descripción del evento: {descripcion_evento}")
+    cliente = Cliente.usuarios_registrados[0]  # Aquí se asume que el primer cliente está logueado
+    solicitud = Solicitud(cliente, nombre_evento, fecha_evento, descripcion_evento)
+    solicitud.registrar_solicitud()
 
+    print("\nSolicitud enviada con éxito.")
+    solicitud.mostrar_detalles()
 
 
 
