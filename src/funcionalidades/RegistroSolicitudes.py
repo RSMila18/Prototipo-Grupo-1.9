@@ -1,8 +1,7 @@
 def mostrar_menu():
-    print("----- Bienvenido a la solicitud de eventos -----")
+    print("--------------- Bienvenido a la solicitud de eventos ---------------")
     print("1. Enviar una nueva solicitud")
-    print("2. Historial de solicitudes")
-    print("3. Salir")
+    print("2. Salir")
     opcion = input("Seleccione una opción: ")
     return opcion
     
@@ -10,7 +9,7 @@ def mostrar_menu():
 def enviar_solicitud():
     nombre = input("Ingrese su nombre: ")
     apellido = input("Ingrese su apellido: ")
-    carnet = input("Ingrese su numero de identificación")
+    carnet = input("Ingrese su numero de identificación: ")
     nombre_evento = input("Ingrese el nombre del evento: ")
     fecha_evento = input("Ingrese la fecha del evento (DD/MM/AAAA): ")
     descripcion_evento = input("Ingrese una breve descripción del evento: ")
@@ -28,7 +27,7 @@ def main():
         if opcion == '1':
             enviar_solicitud()
 
-        elif opcion == '3':
+        elif opcion == '2':
             print("Saliendo del programa...")
             break
         else:
