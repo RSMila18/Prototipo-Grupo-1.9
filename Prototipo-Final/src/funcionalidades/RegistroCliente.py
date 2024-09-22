@@ -6,6 +6,7 @@ class RegistroCliente:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Portal de Inicio")
+        self.usuario_actual = None  # Agregado para almacenar el usuario actual
 
         # Pantalla de bienvenida
         self.frame_bienvenida = tk.Frame(self.root)
@@ -49,9 +50,9 @@ class RegistroCliente:
         tk.Label(self.frame_registro, text="Tipo de Documento").grid(row=2, column=0)
         self.tipo_documento_var = tk.StringVar()
         self.tipo_documento_combo = ttk.Combobox(self.frame_registro, textvariable=self.tipo_documento_var)
-        self.tipo_documento_combo['values'] = ["Cédula de Ciudadanía", "NIT"]  # Opciones restringidas
+        self.tipo_documento_combo['values'] = ["Cédula de Ciudadanía", "NIT"]
         self.tipo_documento_combo.grid(row=2, column=1)
-        self.tipo_documento_combo.bind("<<ComboboxSelected>>", self.cambiar_tipo_documento)  # Evento para manejar cambio
+        self.tipo_documento_combo.bind("<<ComboboxSelected>>", self.cambiar_tipo_documento)
 
         tk.Label(self.frame_registro, text="Documento").grid(row=3, column=0)
         self.documento_entry = tk.Entry(self.frame_registro)
@@ -82,7 +83,7 @@ class RegistroCliente:
         tk.Button(self.frame_registro, text="Registrar", command=self.registrar_usuario).grid(row=9, columnspan=2, pady=10)
         tk.Button(self.frame_registro, text="Regresar", command=self.mostrar_bienvenida).grid(row=10, columnspan=2)
 
-        self.ocultar_representante()  # Inicialmente ocultar la entrada de representante legal
+        self.ocultar_representante()
 
     def cambiar_tipo_documento(self, event):
         tipo_documento = self.tipo_documento_var.get()
@@ -92,14 +93,14 @@ class RegistroCliente:
             self.ocultar_representante()
 
     def mostrar_representante(self):
-        self.representante_label.grid()  # Mostrar el label
-        self.representante_entry.grid()  # Mostrar el campo de entrada
+        self.representante_label.grid()
+        self.representante_entry.grid()
 
     def ocultar_representante(self):
-        self.representante_label.grid_remove()  # Ocultar el label
-        self.representante_entry.grid_remove()  # Ocultar el campo de entrada
-        self.representante_entry.delete(0, tk.END)  # Asegurar que esté vacío
-        self.representante_entry.insert(0, "N/A")  # Insertar "N/A" si no es NIT
+        self.representante_label.grid_remove()
+        self.representante_entry.grid_remove()
+        self.representante_entry.delete(0, tk.END)
+        self.representante_entry.insert(0, "N/A")
 
     def registrar_usuario(self):
         nombre = self.nombre_entry.get()
@@ -115,19 +116,25 @@ class RegistroCliente:
             messagebox.showerror("Error", "El correo electrónico no es válido.")
             return
 
-        cliente = Cliente(nombre, tipo_documento, documento, representante, correo, telefono, usuario, contrasena)
-        cliente.registrar()
+        cliente = Cliente(nombre, documento, tipo_documento, representante)  # Ajustado para que solo use lo necesario
+        Cliente.registrar_cliente(cliente)
+
+        # Almacenar el usuario actual después de registrarlo
+        self.usuario_actual = cliente
 
     def iniciar_sesion(self):
         usuario = self.usuario_entry.get()
         contrasena = self.contrasena_entry.get()
 
-        for cliente in Cliente.usuarios_registrados:
+        for cliente in Cliente.clientes_registrados:
             if cliente.iniciar_sesion(usuario, contrasena):
+                self.usuario_actual = cliente  # Almacenar el usuario actual
                 messagebox.showinfo("Éxito", f"Bienvenido {cliente.nombre}")
-                return
+                self.root.destroy()  # Cerrar la ventana de inicio de sesión
+                return cliente  # Devolver el usuario actual
 
         messagebox.showerror("Error", "Usuario o contraseña incorrectos.")
+        return None
 
     def limpiar_frame(self):
         for widget in self.root.winfo_children():
@@ -139,6 +146,3 @@ class RegistroCliente:
 
 if __name__ == "__main__":
     RegistroCliente()
-
-
-
