@@ -46,8 +46,8 @@ class Cliente:
         print(f"Nombre: {self.nombre}\nDocumento: {self.documento}\nTipo de Documento: {self.tipo_documento}")
         if self.tipo_documento == "NIT":
             print(f"Representante Legal: {self.representante_legal}")
-        else:
-            print("Representante Legal: N/A")
+        print(f"Correo: {self.correo}\nTeléfono: {self.telefono}\nUsuario: {self.usuario}")
 
-# Cargar los usuarios registrados al iniciar el programa
+# Cargar usuarios al inicio
 Cliente.cargar_usuarios()
+

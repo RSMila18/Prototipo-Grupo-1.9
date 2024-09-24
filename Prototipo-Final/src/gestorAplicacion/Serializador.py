@@ -1,20 +1,27 @@
 import pickle
+import os
 
 class Serializador:
-
     @staticmethod
-    def guardar_datos(nombre_archivo, datos):
-        with open(nombre_archivo, "wb") as archivo:
-            pickle.dump(datos, archivo)
-
-    @staticmethod
-    def cargar_datos(nombre_archivo):
+    def guardar_datos(archivo, datos):
         try:
-            with open(nombre_archivo, "rb") as archivo:
-                return pickle.load(archivo)
-        except FileNotFoundError:
-            print(f"Archivo {nombre_archivo} no encontrado, creando nuevo archivo.")
+            with open(archivo, 'wb') as f:
+                pickle.dump(datos, f)
+        except Exception as e:
+            print(f"Error al guardar datos: {e}")
+
+    @staticmethod
+    def cargar_datos(archivo):
+        if not os.path.exists(archivo):
             return []
+
+        try:
+            with open(archivo, 'rb') as f:
+                return pickle.load(f)
         except (EOFError, pickle.UnpicklingError):
-            print("Error al leer el archivo.")
+            print("Error al cargar datos: archivo vacío o datos corruptos.")
             return []
+        except Exception as e:
+            print(f"Error al cargar datos: {e}")
+            return []
+

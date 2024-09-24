@@ -137,15 +137,13 @@ class RegistroCliente:
                 self.usuario_actual_var = cliente  # Almacenar el usuario actual
                 messagebox.showinfo("Éxito", f"Bienvenido {cliente.nombre}")
                 
-                # Actualizar el usuario actual en MenuPrincipal y mostrar el menú principal
-                self.master.usuario_actual = cliente
+                # En lugar de destruir la ventana, limpiamos el frame actual
                 self.master.limpiar_frame()
-                self.master.crear_menu()  # Mostrar el menú principal después de iniciar sesión
+                self.mostrar_menu_principal()  # Llamar al menú principal después de iniciar sesión
                 return cliente  # Devolver el usuario actual
 
         messagebox.showerror("Error", "Usuario o contraseña incorrectos.")
         return None
-
 
 
     def regresar(self):

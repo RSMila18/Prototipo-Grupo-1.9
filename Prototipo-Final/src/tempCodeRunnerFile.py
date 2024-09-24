@@ -1,63 +1,109 @@
 import tkinter as tk
 from tkinter import messagebox
 from funcionalidades.RegistroCliente import RegistroCliente
-from funcionalidades.HistorialSolicitudes import HistorialSolicitudes  # Se importa la funcionalidad de historial de solicitudes
+from funcionalidades.HistorialSolicitudes import HistorialSolicitudes
+from gestorAplicacion.cliente import Cliente
+from gestorAplicacion.solicitud import Solicitud
 
 class MenuPrincipal(tk.Tk):
-    def __init__(self, usuario_actual):
+    def __init__(self):
         super().__init__()
         self.title("Menú Principal")
-        self.geometry("300x200")
-
-        self.usuario_actual = usuario_actual
+        self.geometry("650x400")
+        self.usuario_actual = None  # Inicializa el usuario actual como None
+        self.registro_cliente = RegistroCliente(self)  # Instancia la clase RegistroCliente y pasa self (MenuPrincipal)
         self.crear_menu()
 
     def crear_menu(self):
-        # Si el usuario es ADMIN, mostrar las opciones de administración
-        if self.usuario_actual == "ADMIN":
-            tk.Label(self, text="Bienvenido ADMIN", font=("Arial", 14)).pack(pady=10)
-            tk.Button(self, text="Gestión de Inventario", command=self.gestion_inventario).pack(pady=5)
-            tk.Button(self, text="Calendario de Eventos", command=self.calendario_eventos).pack(pady=5)
-        # Si es un usuario regular, mostrar las opciones de cliente
+        self.limpiar_frame()
+        self.label_opciones = tk.Label(self, text="Opciones", font=("Arial", 14))
+        self.label_opciones.pack(pady=10)
+
+        if self.usuario_actual is None:
+            # Mostrar solo opciones de inicio de sesión y registro si no hay usuario actual
+            tk.Button(self, text="Iniciar Sesión", command=self.mostrar_inicio_sesion).pack(pady=5)
+            tk.Button(self, text="Registrar Nuevo Usuario", command=self.mostrar_registro).pack(pady=5)
         else:
-            tk.Label(self, text=f"Bienvenido {self.usuario_actual.nombre}", font=("Arial", 14)).pack(pady=10)
-            tk.Button(self, text="Crear Nueva Solicitud", command=self.crear_solicitud).pack(pady=5)
-            tk.Button(self, text="Ver Historial de Solicitudes", command=self.ver_historial).pack(pady=5)
+            if self.usuario_actual.usuario == "ADMIN":
+                tk.Button(self, text="Ver Usuarios Registrados", command=self.ver_usuarios).pack(pady=5)
+                tk.Button(self, text="Gestionar Solicitudes", command=self.gestionar_solicitudes).pack(pady=5)
+            else:  # Usuario regular
+                tk.Button(self, text="Registrar Nueva Solicitud", command=self.mostrar_registro_solicitud).pack(pady=5)
+                tk.Button(self, text="Ver Historial de Solicitudes", command=self.ver_historial).pack(pady=5)
+            
+            tk.Button(self, text="Cerrar Sesión", command=self.cerrar_sesion).pack(pady=5)
 
-    # Métodos para ADMIN (no implementados aún)
-    def gestion_inventario(self):
-        # inventario = MenuInventario()
-        # inventario.mostrar_menu()
-        messagebox.showinfo("Inventario", "Funcionalidad de gestión de inventario aún no implementada.")
+    def mostrar_inicio_sesion(self):
+        self.limpiar_frame()
+        self.registro_cliente.mostrar_inicio_sesion()
 
-    def calendario_eventos(self):
-        # calendariomain()
-        messagebox.showinfo("Calendario", "Funcionalidad de calendario de eventos aún no implementada.")
+    def mostrar_registro(self):
+        self.limpiar_frame()
+        self.registro_cliente.mostrar_registro()
 
-    # Métodos para clientes
-    def crear_solicitud(self):
-        # registro_solicitudes_main()
-        messagebox.showinfo("Crear Solicitud", "Funcionalidad de creación de solicitudes aún no implementada.")
+    def mostrar_registro_solicitud(self):
+        self.limpiar_frame()
+        self.frame_solicitud = tk.Frame(self)
+        self.frame_solicitud.pack()
 
-    # Método para ver el historial de solicitudes
+        tk.Label(self.frame_solicitud, text="Registrar Solicitud", font=("Arial", 14)).grid(row=0, columnspan=2, pady=10)
+
+        tk.Label(self.frame_solicitud, text="Nombre del evento").grid(row=1, column=0)
+        self.nombre_evento_entry = tk.Entry(self.frame_solicitud)
+        self.nombre_evento_entry.grid(row=1, column=1)
+
+        tk.Label(self.frame_solicitud, text="Fecha del evento (DD/MM/AAAA)").grid(row=2, column=0)
+        self.fecha_evento_entry = tk.Entry(self.frame_solicitud)
+        self.fecha_evento_entry.grid(row=2, column=1)
+
+        tk.Label(self.frame_solicitud, text="Descripción del evento").grid(row=3, column=0)
+        self.descripcion_evento_entry = tk.Entry(self.frame_solicitud)
+        self.descripcion_evento_entry.grid(row=3, column=1)
+
+        tk.Button(self.frame_solicitud, text="Enviar Solicitud", command=self.registrar_solicitud).grid(row=4, columnspan=2, pady=10)
+        tk.Button(self.frame_solicitud, text="Regresar", command=self.regresar_menu).grid(row=5, columnspan=2)
+
+    def registrar_solicitud(self):
+        nombre_evento = self.nombre_evento_entry.get()
+        fecha_evento = self.fecha_evento_entry.get()
+        descripcion_evento = self.descripcion_evento_entry.get()
+
+        if nombre_evento and fecha_evento and descripcion_evento:
+            cliente = self.usuario_actual  # Usuario actual logueado
+            solicitud = Solicitud(cliente, nombre_evento, fecha_evento, descripcion_evento)
+            solicitud.registrar_solicitud()
+
+            messagebox.showinfo("Éxito", "Solicitud registrada con éxito.")
+            self.regresar_menu()
+        else:
+            messagebox.showerror("Error", "Por favor, complete todos los campos.")
+
+    def regresar_menu(self):
+        self.crear_menu()
+
     def ver_historial(self):
-        # Aquí se llamará la funcionalidad de historial de solicitudes
-        self.destroy()  # Cierra la ventana actual del menú principal
-        HistorialSolicitudes(self.usuario_actual)  # Lanza la ventana del historial de solicitudes
+        self.limpiar_frame()
+        if self.usuario_actual:
+            HistorialSolicitudes(self, self.usuario_actual)  # Pasar el usuario actual
+        else:
+            messagebox.showerror("Error", "No hay un usuario actual.")
 
-def iniciar_aplicacion():
-    # Iniciar el registro/login
-    app_login = RegistroCliente()
-    app_login.mainloop()
+    def ver_usuarios(self):
+        pass  # Implementa la funcionalidad para ver los usuarios registrados
 
-    # Recuperar usuario logueado
-    usuario_actual = app_login.iniciar_sesion()
-    if usuario_actual is not None:
-        # Lanzar el menú principal
-        app_menu = MenuPrincipal(usuario_actual)
-        app_menu.mainloop()
-    else:
-        messagebox.showerror("Error", "No se pudo iniciar sesión.")
+    def gestionar_solicitudes(self):
+        pass  # Implementa la funcionalidad para gestionar solicitudes
+
+    def cerrar_sesion(self):
+        self.usuario_actual = None
+        messagebox.showinfo("Cierre de sesión", "Has cerrado sesión exitosamente.")
+        self.regresar_menu()
+
+    def limpiar_frame(self):
+        for widget in self.winfo_children():
+            widget.destroy()
+
 
 if __name__ == "__main__":
-    iniciar_aplicacion()
+    app = MenuPrincipal()
+    app.mainloop()
