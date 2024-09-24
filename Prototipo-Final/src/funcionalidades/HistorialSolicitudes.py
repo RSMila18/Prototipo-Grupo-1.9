@@ -8,6 +8,9 @@ class HistorialSolicitudes:
         self.frame = tk.Frame(master)
         self.frame.pack(fill="both", expand=True)
 
+        # Etiqueta del título
+        tk.Label(self.frame, text="Historial de Solicitudes", font=("Arial", 16)).pack(pady=10)
+
         # Tabla para mostrar solicitudes
         self.tree = ttk.Treeview(self.frame, columns=("Evento", "Fecha", "Estado", "Descripción"), show="headings")
         self.tree.heading("Evento", text="Evento")
@@ -21,6 +24,9 @@ class HistorialSolicitudes:
         self.tree.column("Descripción", width=250)
 
         self.tree.pack(fill="both", expand=True)
+
+        # Botón de regreso
+        tk.Button(self.frame, text="Regresar", command=self.regresar).pack(pady=10)
 
         # Cargar las solicitudes basadas en el tipo de cliente
         self.cargar_solicitudes()
@@ -48,4 +54,8 @@ class HistorialSolicitudes:
                         solicitud.estado,
                         solicitud.descripcion_evento
                     ))
+
+    def regresar(self):
+        self.frame.destroy()  # Destruir el frame actual
+        self.cliente.master.crear_menu()  # Regresar al menú principal
 
