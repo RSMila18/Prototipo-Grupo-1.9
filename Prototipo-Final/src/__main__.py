@@ -110,8 +110,9 @@ class MenuPrincipal(tk.Tk):
         pass
 
     def mostrar_monitoreo_inventario(self):
-        # Implementar funcionalidad para monitorear el inventario
-        pass
+        self.limpiar_frame()  # Limpiar cualquier otro frame visible
+        monitoreo_frame = MonitoreoMateriales(self)  # Crear un frame con la interfaz de MonitoreoMateriales
+        monitoreo_frame.pack()  # Empaquetar el frame dentro de la ventana principal
 
     def busqueda_proveedores(self):
         # Implementar funcionalidad para buscar proveedores
