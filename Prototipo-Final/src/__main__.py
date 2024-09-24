@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 from funcionalidades.RegistroCliente import RegistroCliente
 from funcionalidades.HistorialSolicitudes import HistorialSolicitudes
-from funcionalidades.MonitoreoMateriales import MonitoreoMateriales  # Importar MonitoreoMateriales
+from funcionalidades.MonitoreoMateriales import MonitoreoMateriales  
 from gestorAplicacion.cliente import Cliente
 from gestorAplicacion.solicitud import Solicitud
 
@@ -11,8 +11,8 @@ class MenuPrincipal(tk.Tk):
         super().__init__()
         self.title("Menú Principal")
         self.geometry("650x400")
-        self.usuario_actual = None  # Inicializa el usuario actual como None
-        self.registro_cliente = RegistroCliente(self)  # Instancia la clase RegistroCliente y pasa self (MenuPrincipal)
+        self.usuario_actual = None  
+        self.registro_cliente = RegistroCliente(self)  
         self.crear_menu()
 
     def crear_menu(self):
@@ -21,17 +21,17 @@ class MenuPrincipal(tk.Tk):
         self.label_opciones.pack(pady=10)
 
         if self.usuario_actual is None:
-            # Mostrar solo opciones de inicio de sesión y registro si no hay usuario actual
+            
             tk.Button(self, text="Iniciar Sesión", command=self.mostrar_inicio_sesion).pack(pady=5)
             tk.Button(self, text="Registrar Nuevo Usuario", command=self.mostrar_registro).pack(pady=5)
         else:
             if self.usuario_actual.usuario == "ADMIN":
                 tk.Button(self, text="Ver Calendario de Eventos", command=self.ver_calendario).pack(pady=5)
                 tk.Button(self, text="Gestionar Inventario", command=self.gestionar_inventario).pack(pady=5)
-                tk.Button(self, text="Monitoreo de Inventario", command=self.mostrar_monitoreo_inventario).pack(pady=5)  # Botón para el monitoreo de inventario
+                tk.Button(self, text="Monitoreo de Inventario", command=self.mostrar_monitoreo_inventario).pack(pady=5)  
                 tk.Button(self, text="Buscar Proveedores", command=self.busqueda_proveedores).pack(pady=5)
                 tk.Button(self, text="Reportes de Estado", command=self.reportes_estado).pack(pady=5)
-            else:  # Usuario regular
+            else:  # Usuario estandar
                 tk.Button(self, text="Registrar Nueva Solicitud", command=self.mostrar_registro_solicitud).pack(pady=5)
                 tk.Button(self, text="Ver Historial de Solicitudes", command=self.ver_historial).pack(pady=5)
             tk.Button(self, text="Cerrar Sesión", command=self.cerrar_sesion).pack(pady=5)
@@ -80,12 +80,11 @@ class MenuPrincipal(tk.Tk):
             self.regresar_menu()
         else:
             messagebox.showerror("Error", "Por favor, complete todos los campos.")
-
-          
+       
     def ver_historial(self):
         self.limpiar_frame()
         if self.usuario_actual:
-            HistorialSolicitudes(self, self.usuario_actual)  # Llamada a la funcionalidad de historial
+            HistorialSolicitudes(self, self.usuario_actual)
         else:
             messagebox.showerror("Error", "Debes iniciar sesión para ver el historial.")
 

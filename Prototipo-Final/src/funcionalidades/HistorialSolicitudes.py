@@ -6,7 +6,7 @@ from datetime import datetime
 class HistorialSolicitudes:
     def __init__(self, master, usuario_actual):
         self.master = master
-        self.usuario_actual = usuario_actual  # Guardar el usuario actual
+        self.usuario_actual = usuario_actual
         self.master.title("Historial de Solicitudes")
 
         self.filtro_frame = tk.Frame(self.master)
@@ -41,7 +41,7 @@ class HistorialSolicitudes:
         """
         Carga y muestra solo las solicitudes del usuario actual.
         """
-        self.lista_solicitudes.delete(0, tk.END)  # Limpia la lista
+        self.lista_solicitudes.delete(0, tk.END)
         for solicitud in Solicitud.solicitudes_registradas:
             # Filtrar las solicitudes por el usuario actual
             if solicitud.cliente.usuario == self.usuario_actual.usuario:
@@ -54,13 +54,13 @@ class HistorialSolicitudes:
         filtro_estado = self.combo_filtro_estado.get()
         fecha_filtro = self.fecha_filtro_entry.get()
 
-        self.lista_solicitudes.delete(0, tk.END)  # Limpia la lista
+        self.lista_solicitudes.delete(0, tk.END)
         for solicitud in Solicitud.solicitudes_registradas:
-            # Verifica que la solicitud sea del usuario actual
+
             if solicitud.cliente.usuario == self.usuario_actual.usuario:
-                # Filtrar por estado
+
                 if filtro_estado == "Todos" or solicitud.estado == filtro_estado:
-                    # Filtrar por fecha
+
                     if fecha_filtro:
                         try:
                             fecha_input = datetime.strptime(fecha_filtro, "%d/%m/%Y")
@@ -82,5 +82,5 @@ class HistorialSolicitudes:
 
     def regresar(self):
         self.master.limpiar_frame()
-        self.master.crear_menu()  # Regresar al menú principal
+        self.master.crear_menu()
 

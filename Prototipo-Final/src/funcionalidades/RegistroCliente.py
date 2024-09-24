@@ -5,7 +5,7 @@ from gestorAplicacion.cliente import Cliente
 class RegistroCliente:
     def __init__(self, master):
         self.master = master
-        self.usuario_actual_var = None  # Cambié para usar una variable de instancia
+        self.usuario_actual_var = None 
 
         self.master.title("Bienvenido al Portal")
         self.frame_bienvenida = tk.Frame(self.master)
@@ -14,7 +14,6 @@ class RegistroCliente:
         tk.Button(self.frame_bienvenida, text="Iniciar Sesión", command=self.mostrar_inicio_sesion).pack(pady=5)
         tk.Button(self.frame_bienvenida, text="Registrar Nuevo Usuario", command=self.mostrar_registro).pack(pady=5)
 
-    # Este método ya devuelve la variable de instancia correctamente
     def obtener_usuario_actual(self):
         return self.usuario_actual_var
 
@@ -39,7 +38,7 @@ class RegistroCliente:
 
     def mostrar_bienvenida(self):
         self.master.limpiar_frame()
-        RegistroCliente(self.master)  # Volver a mostrar el marco de bienvenida
+        RegistroCliente(self.master)
 
     def mostrar_registro(self):
         self.master.limpiar_frame()
@@ -124,7 +123,6 @@ class RegistroCliente:
         cliente = Cliente(nombre, documento, tipo_documento, representante, correo, telefono, usuario, contrasena)
         Cliente.registrar_cliente(cliente)
 
-        # Almacenar el usuario actual después de registrarlo
         self.usuario_actual_var = cliente
         messagebox.showinfo("Éxito", "Usuario registrado con éxito.")
 
@@ -134,14 +132,13 @@ class RegistroCliente:
 
         for cliente in Cliente.clientes_registrados:
             if cliente.iniciar_sesion(usuario, contrasena):
-                self.usuario_actual_var = cliente  # Almacenar el usuario actual
+                self.usuario_actual_var = cliente 
                 messagebox.showinfo("Éxito", f"Bienvenido {cliente.nombre}")
                 
-                # Actualizar el usuario actual en MenuPrincipal y mostrar el menú principal
                 self.master.usuario_actual = cliente
                 self.master.limpiar_frame()
-                self.master.crear_menu()  # Mostrar el menú principal después de iniciar sesión
-                return cliente  # Devolver el usuario actual
+                self.master.crear_menu()
+                return cliente
 
         messagebox.showerror("Error", "Usuario o contraseña incorrectos.")
         return None
