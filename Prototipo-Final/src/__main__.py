@@ -26,9 +26,11 @@ class MenuPrincipal(tk.Tk):
             tk.Button(self, text="Registrar Nuevo Usuario", command=self.mostrar_registro).pack(pady=5)
         else:
             if self.usuario_actual.usuario == "ADMIN":
-                tk.Button(self, text="Ver Usuarios Registrados", command=self.ver_usuarios).pack(pady=5)
-                tk.Button(self, text="Gestionar Solicitudes", command=self.gestionar_solicitudes).pack(pady=5)
+                tk.Button(self, text="Ver Calendario de Eventos", command=self.ver_calendario).pack(pady=5)
+                tk.Button(self, text="Gestionar Inventario", command=self.gestionar_inventario).pack(pady=5)
                 tk.Button(self, text="Monitoreo de Inventario", command=self.mostrar_monitoreo_inventario).pack(pady=5)  # Botón para el monitoreo de inventario
+                tk.Button(self, text="Buscar Proveedores", command=self.busqueda_proveedores).pack(pady=5)
+                tk.Button(self, text="Reportes de Estado", command=self.reportes_estado).pack(pady=5)
             else:  # Usuario regular
                 tk.Button(self, text="Registrar Nueva Solicitud", command=self.mostrar_registro_solicitud).pack(pady=5)
                 tk.Button(self, text="Ver Historial de Solicitudes", command=self.ver_historial).pack(pady=5)
@@ -87,13 +89,21 @@ class MenuPrincipal(tk.Tk):
         else:
             messagebox.showerror("Error", "Debes iniciar sesión para ver el historial.")
 
-    def ver_usuarios(self):
+    def ver_calendario(self):
         self.limpiar_frame()
-        # Aquí puedes agregar la lógica para ver los usuarios registrados
+        # Aquí puedes agregar la lógica para ver el calendario de eventos
 
-    def gestionar_solicitudes(self):
+    def gestionar_inventario(self):
         self.limpiar_frame()
-        # Aquí puedes agregar la lógica para gestionar solicitudes
+        # Aquí puedes agregar la lógica para gestionar inventario
+
+    def busqueda_proveedores(self):
+        self.limpiar_frame()
+        #Aqui puedes agregar la logica para la busqueda de proveedores
+
+    def reportes_estado(self):
+        self.limpiar_frame()
+        #Aqui puedes agregar la logica para los reportes de estado
 
     def mostrar_monitoreo_inventario(self):
         self.limpiar_frame()  # Limpiar cualquier otro frame visible
