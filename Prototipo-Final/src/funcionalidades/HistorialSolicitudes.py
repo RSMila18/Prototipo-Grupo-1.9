@@ -23,34 +23,40 @@ class HistorialSolicitudes:
 
         self.lista_solicitudes = tk.Listbox(self.master, width=50)
         self.lista_solicitudes.pack(pady=10)
-        self.lista_solicitudes.bind('<<ListboxSelect>>', self.mostrar_detalle)
+        self.lista_solicitudes.bind('<<ListboxSelect>>', self.mostrar_detalle_solicitud)
 
-        self.cargar_lista_solicitudes()
+        self.boton_regresar = tk.Button(self.master, text="Regresar", command=self.regresar_menu)
+        self.boton_regresar.pack(pady=10)
 
-    def cargar_lista_solicitudes(self):
+        self.cargar_solicitudes()  # Cargar las solicitudes al iniciar
+
+    def cargar_solicitudes(self):
         self.lista_solicitudes.delete(0, tk.END)
-        for solicitud in Solicitud.solicitudes_registradas:
-            self.lista_solicitudes.insert(tk.END, f"{solicitud.nombre_evento} - {solicitud.fecha_evento} - {solicitud.estado}")
+        solicitudes = Solicitud.solicitudes_registradas  # Obtener todas las solicitudes
+
+        for solicitud in solicitudes:
+            if solicitud.cliente == self.usuario_actual or self.usuario_actual.usuario == "ADMIN":
+                self.lista_solicitudes.insert(tk.END, f"{solicitud.nombre_evento} - {solicitud.estado}")
 
     def filtrar_solicitudes(self):
         filtro = self.combo_filtro.get()
         self.lista_solicitudes.delete(0, tk.END)
-        for solicitud in Solicitud.solicitudes_registradas:
-            if filtro == "Todos" or solicitud.estado == filtro:
-                self.lista_solicitudes.insert(tk.END, f"{solicitud.nombre_evento} - {solicitud.fecha_evento} - {solicitud.estado}")
+        solicitudes = Solicitud.solicitudes_registradas  # Obtener todas las solicitudes
 
-    def mostrar_detalle(self, event):
-        seleccion = self.lista_solicitudes.curselection()
-        if seleccion:
-            index = seleccion[0]
-            solicitud = Solicitud.solicitudes_registradas[index]
-            descripcion = solicitud.obtener_descripcion()
-            messagebox.showinfo("Detalles de la Solicitud", f"Descripción: {descripcion}")
+        for solicitud in solicitudes:
+            if (solicitud.cliente == self.usuario_actual or self.usuario_actual.usuario == "ADMIN") and (filtro == "Todos" or solicitud.estado == filtro):
+                self.lista_solicitudes.insert(tk.END, f"{solicitud.nombre_evento} - {solicitud.estado}")
 
-# Ejemplo de uso
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = HistorialSolicitudes(root, "Usuario Actual")  # Cambia "Usuario Actual" por un usuario real si es necesario
-    root.mainloop()
+    def mostrar_detalle_solicitud(self, event):
+        try:
+            seleccion = self.lista_solicitudes.curselection()[0]
+            solicitud = Solicitud.solicitudes_registradas[seleccion]
+            messagebox.showinfo("Detalles de Solicitud", f"Evento: {solicitud.nombre_evento}\nFecha: {solicitud.fecha_evento}\nDescripción: {solicitud.descripcion_evento}\nEstado: {solicitud.estado}")
+        except IndexError:
+            pass  # No se seleccionó nada
+
+    def regresar_menu(self):
+        self.master.limpiar_frame()  # Limpiar la ventana
+        self.master.crear_menu()  # Regresar al menú principal
 
 
