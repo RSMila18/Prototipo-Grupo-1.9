@@ -95,7 +95,10 @@ class MenuPrincipal(tk.Tk):
 
     def ver_historial(self):
         self.limpiar_frame()
-        HistorialSolicitudes(self)  # Pasar la referencia de la ventana
+        if self.usuario_actual:  # Asegúrate de que hay un usuario actual
+            HistorialSolicitudes(self, self.usuario_actual)  # Pasar el usuario actual como cliente
+        else:
+            messagebox.showerror("Error", "No hay un usuario actual.")
 
     def ver_usuarios(self):
         # Implementa la funcionalidad para ver los usuarios registrados
@@ -119,3 +122,5 @@ def iniciar_aplicacion():
 
 if __name__ == "__main__":
     iniciar_aplicacion()
+
+

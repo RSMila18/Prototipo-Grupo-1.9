@@ -27,9 +27,10 @@ class Solicitud:
             cls.solicitudes_registradas = datos
         else:
             cls.solicitudes_registradas = []
+            print("No se pudieron cargar las solicitudes, se inicializa una lista vacía.")
 
     def mostrar_detalles(self):
-        print(f"Detalles de la solicitud:\n- Responsable: {self.cliente.nombre}\n- Numero de documento: {self.cliente.documento}\n- Nombre del evento: {self.nombre_evento}\n- Fecha de realización: {self.fecha_evento}\n- Descripción del evento: {self.descripcion_evento}\n- Estado: {self.estado}")
+        print(f"Detalles de la solicitud:\n- Responsable: {self.cliente.nombre}\n- Número de documento: {self.cliente.documento}\n- Nombre del evento: {self.nombre_evento}\n- Fecha de realización: {self.fecha_evento}\n- Descripción del evento: {self.descripcion_evento}\n- Estado: {self.estado}")
 
 # Cargar las solicitudes registradas al iniciar el programa
 Solicitud.cargar_solicitudes()
