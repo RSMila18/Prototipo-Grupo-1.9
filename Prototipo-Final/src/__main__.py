@@ -20,10 +20,12 @@ class MenuPrincipal(tk.Tk):
         if self.usuario_actual is None:
             tk.Button(self, text="Iniciar Sesión", command=self.mostrar_inicio_sesion).pack(pady=5)
             tk.Button(self, text="Registrar Nuevo Usuario", command=self.mostrar_registro).pack(pady=5)
+
         elif self.usuario_actual.usuario == "ADMIN":
-            tk.Button(self, text="Ver Usuarios Registrados", command=self.ver_usuarios).pack(pady=5)
+            tk.Button(self, text="Ver Usuarios Registrados", command=self.ver_usuarios).pack(pady=5) #Son botones temporales, cambienlos con lo que necesesiten
             tk.Button(self, text="Gestionar Solicitudes", command=self.gestionar_solicitudes).pack(pady=5)
             tk.Button(self, text="Cerrar Sesión", command=self.cerrar_sesion).pack(pady=5)
+            
         else:  # Usuario regular
             tk.Button(self, text="Registrar Nueva Solicitud", command=self.mostrar_registro_solicitud).pack(pady=5)
             tk.Button(self, text="Ver Historial de Solicitudes", command=self.ver_historial).pack(pady=5)
