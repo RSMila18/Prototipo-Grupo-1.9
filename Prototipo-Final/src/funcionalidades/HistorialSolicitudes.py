@@ -1,31 +1,56 @@
 import tkinter as tk
-from tkinter import messagebox
-from gestorAplicacion.solicitud import Solicitud  # Asegúrate de que esta importación sea correcta
+from tkinter import messagebox, ttk
+from gestorAplicacion.solicitud import Solicitud
 
 class HistorialSolicitudes:
-    def __init__(self, master, cliente):
-        self.master = master  # Guardamos la referencia de la ventana principal
-        self.cliente = cliente  # Guardamos el cliente actual
-        self.frame = tk.Frame(self.master)
-        self.frame.pack()
-        self.cargar_historial()
-        self.boton_regresar = tk.Button(self.frame, text="Regresar", command=self.regresar)
-        self.boton_regresar.pack(pady=10)
+    def __init__(self, master, usuario_actual):
+        self.master = master
+        self.usuario_actual = usuario_actual  # Guardar el usuario actual
+        self.master.title("Historial de Solicitudes")
 
-    def cargar_historial(self):
-        solicitudes = [solicitud for solicitud in Solicitud.solicitudes_registradas if solicitud.cliente.documento == self.cliente.documento]
-        
-        if not solicitudes:
-            messagebox.showinfo("Historial de Solicitudes", "No hay solicitudes registradas para este cliente.")
-            return
-        
-        tk.Label(self.frame, text="Historial de Solicitudes", font=("Arial", 14)).pack(pady=10)
+        self.filtro_frame = tk.Frame(self.master)
+        self.filtro_frame.pack(pady=10)
 
-        for solicitud in solicitudes:
-            tk.Label(self.frame, text=f"{solicitud.nombre_evento} - {solicitud.estado}").pack()
+        self.label_filtro = tk.Label(self.filtro_frame, text="Filtrar por:")
+        self.label_filtro.pack(side=tk.LEFT)
 
-    def regresar(self):
-        self.frame.destroy()  # Destruir el frame actual
-        self.master.crear_menu()  # Regresar al menú principal
+        self.combo_filtro = ttk.Combobox(self.filtro_frame, values=["Todos", "Pendiente", "Aprobado", "Rechazado"])
+        self.combo_filtro.current(0)
+        self.combo_filtro.pack(side=tk.LEFT)
+
+        self.boton_filtrar = tk.Button(self.filtro_frame, text="Filtrar", command=self.filtrar_solicitudes)
+        self.boton_filtrar.pack(side=tk.LEFT)
+
+        self.lista_solicitudes = tk.Listbox(self.master, width=50)
+        self.lista_solicitudes.pack(pady=10)
+        self.lista_solicitudes.bind('<<ListboxSelect>>', self.mostrar_detalle)
+
+        self.cargar_lista_solicitudes()
+
+    def cargar_lista_solicitudes(self):
+        self.lista_solicitudes.delete(0, tk.END)
+        for solicitud in Solicitud.solicitudes_registradas:
+            self.lista_solicitudes.insert(tk.END, f"{solicitud.nombre_evento} - {solicitud.fecha_evento} - {solicitud.estado}")
+
+    def filtrar_solicitudes(self):
+        filtro = self.combo_filtro.get()
+        self.lista_solicitudes.delete(0, tk.END)
+        for solicitud in Solicitud.solicitudes_registradas:
+            if filtro == "Todos" or solicitud.estado == filtro:
+                self.lista_solicitudes.insert(tk.END, f"{solicitud.nombre_evento} - {solicitud.fecha_evento} - {solicitud.estado}")
+
+    def mostrar_detalle(self, event):
+        seleccion = self.lista_solicitudes.curselection()
+        if seleccion:
+            index = seleccion[0]
+            solicitud = Solicitud.solicitudes_registradas[index]
+            descripcion = solicitud.obtener_descripcion()
+            messagebox.showinfo("Detalles de la Solicitud", f"Descripción: {descripcion}")
+
+# Ejemplo de uso
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = HistorialSolicitudes(root, "Usuario Actual")  # Cambia "Usuario Actual" por un usuario real si es necesario
+    root.mainloop()
 
 
