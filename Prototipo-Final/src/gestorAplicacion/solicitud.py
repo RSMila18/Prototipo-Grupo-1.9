@@ -1,4 +1,4 @@
-from gestorAplicacion.cliente import Cliente
+from gestorAplicacion.cliente import Cliente 
 from gestorAplicacion.Serializador import Serializador
 
 class Solicitud:
@@ -23,8 +23,9 @@ class Solicitud:
     @classmethod
     def cargar_solicitudes(cls):
         datos = Serializador.cargar_datos(cls.archivo_solicitudes)
-        if isinstance(datos, list) and all(isinstance(solicitud, Solicitud) for solicitud in datos):
-            cls.solicitudes_registradas = datos
+        if isinstance(datos, list):
+            # Crear nuevas instancias de Solicitud
+            cls.solicitudes_registradas = [Solicitud(**sol.__dict__) for sol in datos]
         else:
             cls.solicitudes_registradas = []
             print("No se pudieron cargar las solicitudes, se inicializa una lista vacía.")

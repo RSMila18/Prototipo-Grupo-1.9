@@ -3,6 +3,7 @@ from tkinter import messagebox
 from funcionalidades.RegistroCliente import RegistroCliente
 from funcionalidades.HistorialSolicitudes import HistorialSolicitudes
 from funcionalidades.MonitoreoMateriales import MonitoreoMateriales  
+from funcionalidades.GestionSolicitudes import GestionSolicitudes
 from gestorAplicacion.cliente import Cliente
 from gestorAplicacion.solicitud import Solicitud
 
@@ -21,20 +22,24 @@ class MenuPrincipal(tk.Tk):
         self.label_opciones.pack(pady=10)
 
         if self.usuario_actual is None:
-            
             tk.Button(self, text="Iniciar Sesión", command=self.mostrar_inicio_sesion).pack(pady=5)
             tk.Button(self, text="Registrar Nuevo Usuario", command=self.mostrar_registro).pack(pady=5)
         else:
             if self.usuario_actual.usuario == "ADMIN":
+                tk.Button(self, text="Gestionar Solicitudes", command=self.gestionar_solicitudes).pack(pady=5)
                 tk.Button(self, text="Ver Calendario de Eventos", command=self.ver_calendario).pack(pady=5)
                 tk.Button(self, text="Gestionar Inventario", command=self.gestionar_inventario).pack(pady=5)
                 tk.Button(self, text="Monitoreo de Inventario", command=self.mostrar_monitoreo_inventario).pack(pady=5)  
                 tk.Button(self, text="Buscar Proveedores", command=self.busqueda_proveedores).pack(pady=5)
                 tk.Button(self, text="Reportes de Estado", command=self.reportes_estado).pack(pady=5)
-            else:  # Usuario estandar
+            else:  # Usuario estándar
                 tk.Button(self, text="Registrar Nueva Solicitud", command=self.mostrar_registro_solicitud).pack(pady=5)
                 tk.Button(self, text="Ver Historial de Solicitudes", command=self.ver_historial).pack(pady=5)
             tk.Button(self, text="Cerrar Sesión", command=self.cerrar_sesion).pack(pady=5)
+
+    def gestionar_solicitudes(self):
+        self.limpiar_frame()
+        GestionSolicitudes(self, self.usuario_actual, self.regresar_menu)  # Pasamos el callback
 
     def mostrar_inicio_sesion(self):
         self.limpiar_frame()
@@ -83,36 +88,42 @@ class MenuPrincipal(tk.Tk):
        
     def ver_historial(self):
         self.limpiar_frame()
+        if self.usuario_actual:  # Verificar si hay un usuario actual
+            historial = HistorialSolicitudes(self)
+            historial.mostrar_historial(self.usuario_actual)
+        else:
+            messagebox.showwarning("Advertencia", "Inicie sesión para ver su historial.")
+
+    def ver_historial(self):
+        self.limpiar_frame()
         if self.usuario_actual:
             HistorialSolicitudes(self, self.usuario_actual)
         else:
             messagebox.showerror("Error", "Debes iniciar sesión para ver el historial.")
-
+    
     def ver_calendario(self):
-        self.limpiar_frame()
-        # Aquí puedes agregar la lógica para ver el calendario de eventos
+        # Implementar funcionalidad para ver el calendario de eventos
+        pass
 
     def gestionar_inventario(self):
-        self.limpiar_frame()
-        # Aquí puedes agregar la lógica para gestionar inventario
-
-    def busqueda_proveedores(self):
-        self.limpiar_frame()
-        #Aqui puedes agregar la logica para la busqueda de proveedores
-
-    def reportes_estado(self):
-        self.limpiar_frame()
-        #Aqui puedes agregar la logica para los reportes de estado
+        # Implementar funcionalidad para gestionar el inventario
+        pass
 
     def mostrar_monitoreo_inventario(self):
-        self.limpiar_frame()  # Limpiar cualquier otro frame visible
-        monitoreo_frame = MonitoreoMateriales(self)  # Crear un frame con la interfaz de MonitoreoMateriales
-        monitoreo_frame.pack()  # Empaquetar el frame dentro de la ventana principal
+        # Implementar funcionalidad para monitorear el inventario
+        pass
+
+    def busqueda_proveedores(self):
+        # Implementar funcionalidad para buscar proveedores
+        pass
+
+    def reportes_estado(self):
+        # Implementar funcionalidad para generar reportes de estado
+        pass
 
     def cerrar_sesion(self):
         self.usuario_actual = None
-        messagebox.showinfo("Cierre de sesión", "Has cerrado sesión exitosamente.")
-        self.regresar_menu()
+        self.crear_menu()
 
     def regresar_menu(self):
         self.limpiar_frame()
@@ -121,7 +132,8 @@ class MenuPrincipal(tk.Tk):
     def limpiar_frame(self):
         for widget in self.winfo_children():
             widget.destroy()
-            
+
 if __name__ == "__main__":
     app = MenuPrincipal()
     app.mainloop()
+

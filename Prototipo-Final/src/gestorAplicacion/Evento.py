@@ -1,4 +1,4 @@
-from Material import Material
+from gestorAplicacion.Material import Material
 
 class Evento:
     def __init__(self, nombre):
