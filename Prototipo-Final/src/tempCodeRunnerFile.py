@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 from funcionalidades.RegistroCliente import RegistroCliente
 from funcionalidades.HistorialSolicitudes import HistorialSolicitudes
+from funcionalidades.MonitoreoMateriales import MonitoreoMateriales  # Importar MonitoreoMateriales
 from gestorAplicacion.cliente import Cliente
 from gestorAplicacion.solicitud import Solicitud
 
@@ -27,10 +28,10 @@ class MenuPrincipal(tk.Tk):
             if self.usuario_actual.usuario == "ADMIN":
                 tk.Button(self, text="Ver Usuarios Registrados", command=self.ver_usuarios).pack(pady=5)
                 tk.Button(self, text="Gestionar Solicitudes", command=self.gestionar_solicitudes).pack(pady=5)
+                tk.Button(self, text="Monitoreo de Inventario", command=self.mostrar_monitoreo_inventario).pack(pady=5)  # Botón para el monitoreo de inventario
             else:  # Usuario regular
                 tk.Button(self, text="Registrar Nueva Solicitud", command=self.mostrar_registro_solicitud).pack(pady=5)
                 tk.Button(self, text="Ver Historial de Solicitudes", command=self.ver_historial).pack(pady=5)
-            
             tk.Button(self, text="Cerrar Sesión", command=self.cerrar_sesion).pack(pady=5)
 
     def mostrar_inicio_sesion(self):
@@ -81,29 +82,40 @@ class MenuPrincipal(tk.Tk):
     def regresar_menu(self):
         self.crear_menu()
 
+            
     def ver_historial(self):
         self.limpiar_frame()
         if self.usuario_actual:
-            HistorialSolicitudes(self, self.usuario_actual)  # Pasar el usuario actual
+            HistorialSolicitudes(self, self.usuario_actual)  # Llamada a la funcionalidad de historial
         else:
-            messagebox.showerror("Error", "No hay un usuario actual.")
+            messagebox.showerror("Error", "Debes iniciar sesión para ver el historial.")
 
     def ver_usuarios(self):
-        pass  # Implementa la funcionalidad para ver los usuarios registrados
+        self.limpiar_frame()
+        # Aquí puedes agregar la lógica para ver los usuarios registrados
 
     def gestionar_solicitudes(self):
-        pass  # Implementa la funcionalidad para gestionar solicitudes
+        self.limpiar_frame()
+        # Aquí puedes agregar la lógica para gestionar solicitudes
+
+    def mostrar_monitoreo_inventario(self):
+        self.limpiar_frame()  # Limpiar cualquier otro frame visible
+        monitoreo_frame = MonitoreoMateriales(self)  # Crear un frame con la interfaz de MonitoreoMateriales
+        monitoreo_frame.pack()  # Empaquetar el frame dentro de la ventana principal
 
     def cerrar_sesion(self):
         self.usuario_actual = None
         messagebox.showinfo("Cierre de sesión", "Has cerrado sesión exitosamente.")
         self.regresar_menu()
 
+    def regresar_menu(self):
+        self.limpiar_frame()
+        self.crear_menu()
+
     def limpiar_frame(self):
         for widget in self.winfo_children():
             widget.destroy()
-
-
+            
 if __name__ == "__main__":
     app = MenuPrincipal()
     app.mainloop()

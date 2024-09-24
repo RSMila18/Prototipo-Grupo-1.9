@@ -39,7 +39,7 @@ class RegistroCliente:
 
     def mostrar_bienvenida(self):
         self.master.limpiar_frame()
-        self.frame_bienvenida.pack()  # Volver a mostrar el marco de bienvenida
+        RegistroCliente(self.master)  # Volver a mostrar el marco de bienvenida
 
     def mostrar_registro(self):
         self.master.limpiar_frame()

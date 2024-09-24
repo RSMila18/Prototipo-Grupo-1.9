@@ -79,10 +79,7 @@ class MenuPrincipal(tk.Tk):
         else:
             messagebox.showerror("Error", "Por favor, complete todos los campos.")
 
-    def regresar_menu(self):
-        self.crear_menu()
-
-            
+          
     def ver_historial(self):
         self.limpiar_frame()
         if self.usuario_actual:
