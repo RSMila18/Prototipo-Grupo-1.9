@@ -4,6 +4,7 @@ from funcionalidades.RegistroCliente import RegistroCliente
 from funcionalidades.HistorialSolicitudes import HistorialSolicitudes
 from funcionalidades.MonitoreoMateriales import MonitoreoMateriales  
 from funcionalidades.GestionSolicitudes import GestionSolicitudes
+from funcionalidades.ProveedoresGUI import ProveedoresGUI
 from gestorAplicacion.cliente import Cliente
 from gestorAplicacion.solicitud import Solicitud
 
@@ -115,7 +116,8 @@ class MenuPrincipal(tk.Tk):
         monitoreo_frame.pack()  # Empaquetar el frame dentro de la ventana principal
 
     def busqueda_proveedores(self):
-        # Implementar funcionalidad para buscar proveedores
+        nueva_ventana = tk.Toplevel(self)
+        ProveedoresGUI(nueva_ventana)
         pass
 
     def reportes_estado(self):
