@@ -9,7 +9,7 @@ class MenuPrincipal(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Menú Principal")
-        self.geometry("600x400")
+        self.geometry("650x400")
         self.usuario_actual = None  # Variable para almacenar el usuario actual
         self.crear_menu()
 

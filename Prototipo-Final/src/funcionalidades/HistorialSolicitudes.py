@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox, ttk
 from gestorAplicacion.solicitud import Solicitud
+from datetime import datetime
 
 class HistorialSolicitudes:
     def __init__(self, master, usuario_actual):
@@ -11,52 +12,70 @@ class HistorialSolicitudes:
         self.filtro_frame = tk.Frame(self.master)
         self.filtro_frame.pack(pady=10)
 
-        self.label_filtro = tk.Label(self.filtro_frame, text="Filtrar por:")
-        self.label_filtro.pack(side=tk.LEFT)
+        self.label_filtro_estado = tk.Label(self.filtro_frame, text="Filtrar por estado:")
+        self.label_filtro_estado.pack(side=tk.LEFT)
 
-        self.combo_filtro = ttk.Combobox(self.filtro_frame, values=["Todos", "Pendiente", "Aprobado", "Rechazado"])
-        self.combo_filtro.current(0)
-        self.combo_filtro.pack(side=tk.LEFT)
+        self.combo_filtro_estado = ttk.Combobox(self.filtro_frame, values=["Todos", "Pendiente", "Aprobado", "Rechazado"])
+        self.combo_filtro_estado.current(0)
+        self.combo_filtro_estado.pack(side=tk.LEFT)
+
+        self.label_filtro_fecha = tk.Label(self.filtro_frame, text="Filtrar por fecha (DD/MM/AAAA):")
+        self.label_filtro_fecha.pack(side=tk.LEFT)
+
+        self.fecha_filtro_entry = tk.Entry(self.filtro_frame)
+        self.fecha_filtro_entry.pack(side=tk.LEFT)
 
         self.boton_filtrar = tk.Button(self.filtro_frame, text="Filtrar", command=self.filtrar_solicitudes)
         self.boton_filtrar.pack(side=tk.LEFT)
 
-        self.lista_solicitudes = tk.Listbox(self.master, width=50)
+        self.boton_regresar = tk.Button(self.filtro_frame, text="Regresar", command=self.regresar)
+        self.boton_regresar.pack(side=tk.LEFT)
+
+        self.lista_solicitudes = tk.Listbox(self.master, width=80)
         self.lista_solicitudes.pack(pady=10)
-        self.lista_solicitudes.bind('<<ListboxSelect>>', self.mostrar_detalle_solicitud)
+        self.lista_solicitudes.bind('<<ListboxSelect>>', self.mostrar_detalle)
 
-        self.boton_regresar = tk.Button(self.master, text="Regresar", command=self.regresar_menu)
-        self.boton_regresar.pack(pady=10)
+        self.cargar_lista_solicitudes()
 
-        self.cargar_solicitudes()  # Cargar las solicitudes al iniciar
-
-    def cargar_solicitudes(self):
+    def cargar_lista_solicitudes(self):
         self.lista_solicitudes.delete(0, tk.END)
-        solicitudes = Solicitud.solicitudes_registradas  # Obtener todas las solicitudes
-
-        for solicitud in solicitudes:
-            if solicitud.cliente == self.usuario_actual or self.usuario_actual.usuario == "ADMIN":
-                self.lista_solicitudes.insert(tk.END, f"{solicitud.nombre_evento} - {solicitud.estado}")
+        for solicitud in Solicitud.solicitudes_registradas:
+            self.lista_solicitudes.insert(tk.END, f"{solicitud.nombre_evento} - {solicitud.fecha_evento} - {solicitud.estado}")
 
     def filtrar_solicitudes(self):
-        filtro = self.combo_filtro.get()
+        filtro_estado = self.combo_filtro_estado.get()
+        fecha_filtro = self.fecha_filtro_entry.get()
+
         self.lista_solicitudes.delete(0, tk.END)
-        solicitudes = Solicitud.solicitudes_registradas  # Obtener todas las solicitudes
+        for solicitud in Solicitud.solicitudes_registradas:
+            # Filtrar por estado
+            if filtro_estado == "Todos" or solicitud.estado == filtro_estado:
+                # Filtrar por fecha
+                if fecha_filtro:
+                    try:
+                        fecha_input = datetime.strptime(fecha_filtro, "%d/%m/%Y")
+                        if solicitud.fecha_evento != fecha_input.strftime("%d/%m/%Y"):
+                            continue
+                    except ValueError:
+                        messagebox.showerror("Error", "Formato de fecha incorrecto. Use DD/MM/AAAA.")
+                        return
 
-        for solicitud in solicitudes:
-            if (solicitud.cliente == self.usuario_actual or self.usuario_actual.usuario == "ADMIN") and (filtro == "Todos" or solicitud.estado == filtro):
-                self.lista_solicitudes.insert(tk.END, f"{solicitud.nombre_evento} - {solicitud.estado}")
+                self.lista_solicitudes.insert(tk.END, f"{solicitud.nombre_evento} - {solicitud.fecha_evento} - {solicitud.estado}")
 
-    def mostrar_detalle_solicitud(self, event):
-        try:
-            seleccion = self.lista_solicitudes.curselection()[0]
-            solicitud = Solicitud.solicitudes_registradas[seleccion]
-            messagebox.showinfo("Detalles de Solicitud", f"Evento: {solicitud.nombre_evento}\nFecha: {solicitud.fecha_evento}\nDescripción: {solicitud.descripcion_evento}\nEstado: {solicitud.estado}")
-        except IndexError:
-            pass  # No se seleccionó nada
+    def mostrar_detalle(self, event):
+        seleccion = self.lista_solicitudes.curselection()
+        if seleccion:
+            index = seleccion[0]
+            solicitud = Solicitud.solicitudes_registradas[index]
+            descripcion = solicitud.descripcion_evento  # Cambiado a la propiedad correcta
+            messagebox.showinfo("Detalles de la Solicitud", f"Descripción: {descripcion}")
 
-    def regresar_menu(self):
-        self.master.limpiar_frame()  # Limpiar la ventana
+    def regresar(self):
+        self.master.limpiar_frame()
         self.master.crear_menu()  # Regresar al menú principal
 
-
+# Ejemplo de uso
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = HistorialSolicitudes(root, "Usuario Actual")  # Cambia "Usuario Actual" por un usuario real si es necesario
+    root.mainloop()
