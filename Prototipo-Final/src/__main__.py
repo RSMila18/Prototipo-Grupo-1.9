@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
+from datetime import datetime
 from funcionalidades.RegistroCliente import RegistroCliente
 from funcionalidades.HistorialSolicitudes import HistorialSolicitudes
 from funcionalidades.MonitoreoMateriales import MonitoreoMateriales  
@@ -78,6 +79,16 @@ class MenuPrincipal(tk.Tk):
         descripcion_evento = self.descripcion_evento_entry.get()
 
         if nombre_evento and fecha_evento and descripcion_evento:
+            # Validación de la fecha en formato DD/MM/AAAA
+            try:
+                # Intentamos convertir la fecha ingresada
+                datetime.strptime(fecha_evento, "%d/%m/%Y")
+            except ValueError:
+                # Si la fecha es inválida, mostramos el error y permitimos corregir
+                messagebox.showerror("Error", "Formato de la fecha incorrecto. Por favor, use DD/MM/AAAA.")
+                return  # Salimos de la función para corregir
+
+            # Si la fecha es válida, continuamos con el registro de la solicitud
             cliente = self.usuario_actual  # Usuario actual logueado
             solicitud = Solicitud(cliente, nombre_evento, fecha_evento, descripcion_evento)
             solicitud.registrar_solicitud()
@@ -86,14 +97,6 @@ class MenuPrincipal(tk.Tk):
             self.regresar_menu()
         else:
             messagebox.showerror("Error", "Por favor, complete todos los campos.")
-       
-    def ver_historial(self):
-        self.limpiar_frame()
-        if self.usuario_actual:  # Verificar si hay un usuario actual
-            historial = HistorialSolicitudes(self)
-            historial.mostrar_historial(self.usuario_actual)
-        else:
-            messagebox.showwarning("Advertencia", "Inicie sesión para ver su historial.")
 
     def ver_historial(self):
         self.limpiar_frame()
@@ -112,7 +115,7 @@ class MenuPrincipal(tk.Tk):
 
     def mostrar_monitoreo_inventario(self):
         self.limpiar_frame()  # Limpiar cualquier otro frame visible
-        monitoreo_frame = MonitoreoMateriales(self)  # Crear un frame con la interfaz de MonitoreoMateriales
+        monitoreo_frame = MonitoreoMateriales(self, regresar_callback=self.regresar_menu)  # Pasamos el callback regresar_menu
         monitoreo_frame.pack()  # Empaquetar el frame dentro de la ventana principal
 
     def busqueda_proveedores(self):

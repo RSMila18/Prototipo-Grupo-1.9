@@ -19,7 +19,7 @@ class MonitoreoMateriales(tk.Frame):
         self.label_titulo.grid(row=0, column=0, pady=10, sticky="w")
 
         # Botón para regresar
-        self.btn_salir = tk.Button(self, text="Salir", command=self.regresar)
+        self.btn_salir = tk.Button(self, text="Regresar", command=self.regresar)
         self.btn_salir.grid(row=0, column=1, pady=10, sticky="e", padx=10)
 
         # Selección de evento
@@ -74,9 +74,9 @@ class MonitoreoMateriales(tk.Frame):
 
     def regresar(self):
         if self.regresar_callback:
-            self.regresar_callback()
+            self.regresar_callback()  # Llama al método que fue pasado como callback (en este caso, self.regresar_menu)
         else:
-            self.master.destroy()
+            self.master.destroy()  # En caso de que no haya callback, cierra la ventana (no necesario aquí)
 
 if __name__ == "__main__":
     root = tk.Tk()
