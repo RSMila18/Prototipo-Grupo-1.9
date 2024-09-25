@@ -8,23 +8,12 @@ class Evento:
     def __init__(self, nombre, fecha=None, materiales=None):
         self.nombre = nombre
         self.fecha = fecha if fecha is not None else "Sin fecha"
-        self.materiales = materiales if materiales is not None else []
+        self.materiales = materiales if materiales is not None else []  # Lista de instancias de Material
 
-    def agregar_material(self, material):
-        if isinstance(material, Material):
-            self.materiales.append(material)
-        else:
-            raise TypeError("El elemento a agregar debe ser un objeto de tipo Material")
-
-    def listar_materiales(self):
-        for material in self.materiales:
-            print(material)
-
-    def monitorear_material(self, nombre_material):
-        for material in self.materiales:
-            if material.nombre == nombre_material:
-                return material
-        return None  # Si no se encuentra el material
+    def agregar_material(self, nombre, cantidad, estado):
+        # Crea una nueva instancia de Material y la agrega a la lista
+        nuevo_material = Material(nombre, cantidad, estado)
+        self.materiales.append(nuevo_material)
 
     def crear_evento(self):
         """Registra el evento y lo guarda en el archivo."""
@@ -47,4 +36,6 @@ class Evento:
         else:
             cls.eventos_registrados = []
             print("No se pudieron cargar los eventos, se inicializa una lista vacía.")
+
+
 

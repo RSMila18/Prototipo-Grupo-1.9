@@ -3,6 +3,7 @@ from tkinter import messagebox
 from gestorAplicacion.solicitud import Solicitud
 from gestorAplicacion.Evento import Evento  # Asegúrate de tener esta clase implementada
 from datetime import datetime
+from gestorAplicacion.Material import Material  # Importa la clase Material
 
 class GestionSolicitudes:
     def __init__(self, master, usuario_actual, regresar_callback):
@@ -84,10 +85,17 @@ class GestionSolicitudes:
             solicitud = Solicitud.solicitudes_registradas[index]
             nombre_evento = solicitud.nombre_evento
             fecha_evento = solicitud.fecha_evento
-            materiales = ["Sillas", "Mesas"]  # Ejemplo simple, esto podría venir de entradas de usuario
 
+            # Aquí puedes definir los materiales con cantidades y estado como instancias de Material
+            materiales = [
+                Material("Sillas", 10, "Disponible"),
+                Material("Mesas", 5, "Agotado")
+            ]
+
+            # Crea el evento con materiales como instancias de la clase Material
             evento = Evento(nombre_evento, fecha_evento, materiales)
             evento.crear_evento()  # Crear y registrar el evento
             messagebox.showinfo("Éxito", "Evento creado y guardado con éxito.")
         else:
             messagebox.showwarning("Advertencia", "Por favor, selecciona una solicitud.")
+
