@@ -11,8 +11,9 @@ class GestionSolicitudes:
         self.regresar_callback = regresar_callback  # Guardamos el callback para regresar
         self.master.title("Gestión de Solicitudes")
 
-        # Cargar las solicitudes registradas al iniciar la ventana
+        # Cargar las solicitudes y eventos registrados al iniciar la ventana
         Solicitud.cargar_solicitudes()
+        Evento.cargar_eventos()
 
         self.lista_solicitudes = tk.Listbox(self.master, width=80)
         self.lista_solicitudes.pack(pady=10)
@@ -76,7 +77,7 @@ class GestionSolicitudes:
             messagebox.showwarning("Advertencia", "Por favor, selecciona una solicitud.")
 
     def crear_evento(self):
-        """Permite crear un evento asociado a la solicitud seleccionada."""
+        """Permite crear un evento asociado a la solicitud seleccionada y guardarlo."""
         seleccion = self.lista_solicitudes.curselection()
         if seleccion:
             index = seleccion[0]
@@ -86,9 +87,7 @@ class GestionSolicitudes:
             materiales = ["Sillas", "Mesas"]  # Ejemplo simple, esto podría venir de entradas de usuario
 
             evento = Evento(nombre_evento, fecha_evento, materiales)
-            evento.crear_evento()  # Asegúrate de tener esta funcionalidad en la clase Evento
-
-            messagebox.showinfo("Éxito", "Evento creado con éxito.")
+            evento.crear_evento()  # Crear y registrar el evento
+            messagebox.showinfo("Éxito", "Evento creado y guardado con éxito.")
         else:
             messagebox.showwarning("Advertencia", "Por favor, selecciona una solicitud.")
-
