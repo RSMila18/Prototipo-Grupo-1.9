@@ -1,9 +1,10 @@
 from gestorAplicacion.Material import Material
 
 class Evento:
-    def __init__(self, nombre):
+    def __init__(self, nombre, fecha=None, materiales=None):
         self.nombre = nombre
-        self.materiales = []
+        self.fecha = fecha if fecha is not None else "Sin fecha"
+        self.materiales = materiales if materiales is not None else []
 
     def agregar_material(self, material):
         if isinstance(material, Material):
@@ -20,3 +21,8 @@ class Evento:
             if material.nombre == nombre_material:
                 return material
         return None  # Si no se encuentra el material
+
+    def crear_evento(self):
+        # Aquí puedes definir lo que quieras que el método haga cuando se cree el evento.
+        print(f"Evento '{self.nombre}' creado con fecha '{self.fecha}' y {len(self.materiales)} materiales.")
+        # Si necesitas serializarlo o realizar otras acciones, lo puedes hacer aquí.
