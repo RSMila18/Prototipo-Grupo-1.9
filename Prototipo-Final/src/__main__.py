@@ -6,6 +6,7 @@ from funcionalidades.HistorialSolicitudes import HistorialSolicitudes
 from funcionalidades.MonitoreoMateriales import MonitoreoMateriales  
 from funcionalidades.GestionSolicitudes import GestionSolicitudes
 from funcionalidades.ProveedoresGUI import ProveedoresGUI
+from funcionalidades.GestionInventario import GestionInventario
 from gestorAplicacion.cliente import Cliente
 from gestorAplicacion.solicitud import Solicitud
 
@@ -110,7 +111,8 @@ class MenuPrincipal(tk.Tk):
         pass
 
     def gestionar_inventario(self):
-        # Implementar funcionalidad para gestionar el inventario
+        gestion_inventario = GestionInventario(self)
+        gestion_inventario.mostrar_interfaz()
         pass
 
     def mostrar_monitoreo_inventario(self):

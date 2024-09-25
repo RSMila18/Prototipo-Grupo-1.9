@@ -1,6 +1,7 @@
 from funcionalidades.RegistroCliente import registro_cliente_main
 from funcionalidades.RegistroSolicitudes import registro_solicitudes_main
 from funcionalidades.Calendario import calendariomain
+
 from funcionalidades.MenuInventario import MenuInventario
 
 def opciones_admin():
