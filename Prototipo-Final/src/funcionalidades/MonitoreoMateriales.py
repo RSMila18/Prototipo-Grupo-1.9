@@ -67,8 +67,18 @@ class MonitoreoMateriales(tk.Frame):
         if selected_item:
             material_seleccionado = self.tree_materiales.item(selected_item, "values")[0]
 
-            # Lógica para mostrar el historial de materiales
-            # (deberías implementar esto según tus necesidades)
+            # Busca el material seleccionado en el evento actual
+            evento_seleccionado = self.combo_eventos.get()
+            for evento in Evento.eventos_registrados:
+                if evento.nombre == evento_seleccionado:
+                    for material in evento.materiales:
+                        if material.nombre == material_seleccionado:
+                            # Desbloquear el área de texto y mostrar el historial
+                            self.historial_text.config(state=tk.NORMAL)
+                            self.historial_text.delete(1.0, tk.END)  # Limpiar el área de texto
+                            self.historial_text.insert(tk.END, material.obtener_historial())
+                            self.historial_text.config(state=tk.DISABLED)  # Bloquear nuevamente el área de texto
+                            return
         else:
             messagebox.showwarning("Advertencia", "Por favor, seleccione un material para ver su historial.")
 

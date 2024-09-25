@@ -1,4 +1,4 @@
-from gestorAplicacion.cliente import Cliente 
+from gestorAplicacion.cliente import Cliente
 from gestorAplicacion.Serializador import Serializador
 
 class Solicitud:
@@ -43,12 +43,4 @@ class Solicitud:
                 f"- Descripción del evento: {self.descripcion_evento}\n"
                 f"- Estado: {self.estado}")
 
-# Ejemplo de cómo agregar una solicitud
-if __name__ == "__main__":
-    cliente_prueba = Cliente("NombreCliente", "123456789", "Cédula de Ciudadanía", "n/a", "cliente@correo.com", "123456789", "usuario", "password")
-    solicitud_prueba = Solicitud(cliente_prueba, "Evento de Prueba", "2024-10-10", "Descripción del evento de prueba")
-    solicitud_prueba.registrar_solicitud()
-    Solicitud.cargar_solicitudes()
-    for solicitud in Solicitud.solicitudes_registradas:
-        print(solicitud.mostrar_detalles())
 

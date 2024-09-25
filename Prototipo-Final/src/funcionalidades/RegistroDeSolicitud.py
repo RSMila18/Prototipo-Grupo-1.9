@@ -25,7 +25,6 @@ class App(tk.Tk):
         # Ventana de entrada para los datos de la solicitud
         self.solicitud_window = SolicitudWindow(self)
 
-
 class SolicitudWindow(tk.Toplevel):
     def __init__(self, parent):
         super().__init__(parent)
@@ -70,7 +69,6 @@ class SolicitudWindow(tk.Toplevel):
             self.destroy()  # Cerrar ventana de solicitud
         else:
             messagebox.showwarning("Advertencia", "Por favor, complete todos los campos.")
-
 
 if __name__ == "__main__":
     app = App()
