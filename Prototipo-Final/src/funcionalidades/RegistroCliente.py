@@ -116,10 +116,18 @@ class RegistroCliente:
         usuario = self.usuario_entry.get()
         contrasena = self.contrasena_entry.get()
 
+        # Verificar si el usuario ya existe
+        for cliente in Cliente.clientes_registrados:
+            if cliente.usuario == usuario:
+                messagebox.showerror("Error", "Este nombre de usuario ya está en uso. Por favor, elija otro.")
+                return
+
+        # Verificar si el correo es válido
         if "@" not in correo or "." not in correo:
             messagebox.showerror("Error", "El correo electrónico no es válido.")
             return
 
+        # Crear el nuevo cliente y registrarlo
         cliente = Cliente(nombre, documento, tipo_documento, representante, correo, telefono, usuario, contrasena)
         Cliente.registrar_cliente(cliente)
 
@@ -142,8 +150,6 @@ class RegistroCliente:
 
         messagebox.showerror("Error", "Usuario o contraseña incorrectos.")
         return None
-
-
 
     def regresar(self):
         self.master.limpiar_frame()
