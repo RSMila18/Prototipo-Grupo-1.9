@@ -6,6 +6,7 @@ from funcionalidades.HistorialSolicitudes import HistorialSolicitudes
 from funcionalidades.MonitoreoMateriales import MonitoreoMateriales  
 from funcionalidades.GestionSolicitudes import GestionSolicitudes
 from funcionalidades.ProveedoresGUI import ProveedoresGUI
+from funcionalidades.CalendarioGUI import CalendarioInteractivo
 from gestorAplicacion.cliente import Cliente
 from gestorAplicacion.solicitud import Solicitud
 
@@ -106,7 +107,8 @@ class MenuPrincipal(tk.Tk):
             messagebox.showerror("Error", "Debes iniciar sesión para ver el historial.")
     
     def ver_calendario(self):
-        # Implementar funcionalidad para ver el calendario de eventos
+        calendario_window = tk.Toplevel(self.master)
+        calendario = CalendarioInteractivo(calendario_window)
         pass
 
     def gestionar_inventario(self):
