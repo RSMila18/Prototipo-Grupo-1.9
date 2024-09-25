@@ -11,6 +11,9 @@ class GestionSolicitudes:
         self.regresar_callback = regresar_callback  # Guardamos el callback para regresar
         self.master.title("Gestión de Solicitudes")
 
+        # Cargar las solicitudes registradas al iniciar la ventana
+        Solicitud.cargar_solicitudes()
+
         self.lista_solicitudes = tk.Listbox(self.master, width=80)
         self.lista_solicitudes.pack(pady=10)
         self.lista_solicitudes.bind('<<ListboxSelect>>', self.mostrar_detalle)
@@ -28,6 +31,7 @@ class GestionSolicitudes:
         self.boton_regresar = tk.Button(self.master, text="Regresar", command=self.regresar_callback)
         self.boton_regresar.pack(pady=5)
 
+        # Cargar la lista de solicitudes en la interfaz
         self.cargar_lista_solicitudes()
 
     def cargar_lista_solicitudes(self):
@@ -46,24 +50,26 @@ class GestionSolicitudes:
             messagebox.showinfo("Detalles de la Solicitud", f"Descripción: {descripcion}")
 
     def aprobar_solicitud(self):
-        """Cambia el estado de la solicitud seleccionada a 'Aprobado'."""
+        """Cambia el estado de la solicitud seleccionada a 'Aprobado' y guarda el cambio."""
         seleccion = self.lista_solicitudes.curselection()
         if seleccion:
             index = seleccion[0]
             solicitud = Solicitud.solicitudes_registradas[index]
             solicitud.estado = "Aprobado"
+            Solicitud.guardar_solicitudes()  # Guardar cambios
             messagebox.showinfo("Éxito", "Solicitud aprobada.")
             self.cargar_lista_solicitudes()
         else:
             messagebox.showwarning("Advertencia", "Por favor, selecciona una solicitud.")
 
     def rechazar_solicitud(self):
-        """Cambia el estado de la solicitud seleccionada a 'Rechazado'."""
+        """Cambia el estado de la solicitud seleccionada a 'Rechazado' y guarda el cambio."""
         seleccion = self.lista_solicitudes.curselection()
         if seleccion:
             index = seleccion[0]
             solicitud = Solicitud.solicitudes_registradas[index]
             solicitud.estado = "Rechazado"
+            Solicitud.guardar_solicitudes()  # Guardar cambios
             messagebox.showinfo("Éxito", "Solicitud rechazada.")
             self.cargar_lista_solicitudes()
         else:
@@ -75,14 +81,9 @@ class GestionSolicitudes:
         if seleccion:
             index = seleccion[0]
             solicitud = Solicitud.solicitudes_registradas[index]
-            # Aquí pides los materiales y la fecha del evento
             nombre_evento = solicitud.nombre_evento
             fecha_evento = solicitud.fecha_evento
-            materiales = []  # Puedes solicitar al usuario que ingrese materiales
-
-            # Por simplicidad, vamos a simular la entrada de materiales
-            materiales.append("Sillas")  # Esto sería reemplazado por entradas de usuario
-            materiales.append("Mesas")
+            materiales = ["Sillas", "Mesas"]  # Ejemplo simple, esto podría venir de entradas de usuario
 
             evento = Evento(nombre_evento, fecha_evento, materiales)
             evento.crear_evento()  # Asegúrate de tener esta funcionalidad en la clase Evento
@@ -90,6 +91,4 @@ class GestionSolicitudes:
             messagebox.showinfo("Éxito", "Evento creado con éxito.")
         else:
             messagebox.showwarning("Advertencia", "Por favor, selecciona una solicitud.")
-
-
 
